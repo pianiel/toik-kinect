@@ -45,7 +45,8 @@ namespace FaceTrackingBasics
         private bool disposed;
 
         private Skeleton[] skeletonData;
-        private static MainWindow mainWindow;
+        private FaceWindow faceWindow;
+        private Game currentGame;
 
         public FaceTrackingViewer()
         {
@@ -80,19 +81,30 @@ namespace FaceTrackingBasics
         {
             if (!this.disposed)
             {
+                this.disposed = true;
+
                 this.ResetFaceTracking();
 
-                this.disposed = true;
             }
         }
 
         protected override void OnRender(DrawingContext drawingContext)
         {
-            base.OnRender(drawingContext);
-            foreach (SkeletonFaceTracker faceInformation in this.trackedSkeletons.Values)
-            {
-                faceInformation.DrawFaceModel(drawingContext);
-            }
+
+                base.OnRender(drawingContext);
+                foreach (SkeletonFaceTracker faceInformation in this.trackedSkeletons.Values)
+                {
+                    if (faceInformation.lastFaceTrackSucceeded && faceInformation.skeletonTrackingState == SkeletonTrackingState.Tracked)
+                    {
+                        if (currentGame.calculateLogic(faceInformation.facePoints, faceWindow.getDifficulty()))
+                            faceWindow.incrementCounter(); 
+                        faceInformation.DrawFaceModel(drawingContext);
+                    }
+
+                    
+                    if (this.disposed)
+                        return;
+                }
         }
 
         private void OnAllFramesReady(object sender, AllFramesReadyEventArgs allFramesReadyEventArgs)
@@ -247,15 +259,14 @@ namespace FaceTrackingBasics
 
         private class SkeletonFaceTracker : IDisposable
         {
-            private EnumIndexableCollection<FeaturePoint, PointF> facePoints;
+            public EnumIndexableCollection<FeaturePoint, PointF> facePoints;
 
             private FaceTracker faceTracker;
 
-            private bool lastFaceTrackSucceeded;
+            public bool lastFaceTrackSucceeded;
 
-            private SkeletonTrackingState skeletonTrackingState;
+            public SkeletonTrackingState skeletonTrackingState;
 
-            private double previousBrowState = 0.0;
 
             private FeaturePoint[] leftBrow = {
                 FeaturePoint.LeftOfLeftEyebrow,
@@ -324,10 +335,7 @@ namespace FaceTrackingBasics
                 }
             }
 
-            private Point confertToPoint(FeaturePoint p)
-            {
-                return new Point(facePoints[p].X, facePoints[p].Y);
-            }
+
 
             private GeometryGroup connectPoints(List<Point> points)
             {
@@ -344,41 +352,15 @@ namespace FaceTrackingBasics
             {
                 List<Point> points = new List<Point>();
                 foreach (FeaturePoint p in featurePoints)
-                    points.Add(confertToPoint(p));
+                    points.Add(GameUtils.convertToPoint(p, facePoints));
                 return connectPoints(points);
             }
 
-            private void calculateLogic()
-            {
-                double browState = getBrowState();
 
-                if (previousBrowState != 0.0)
-                {
-                    if (Math.Abs(previousBrowState - browState) > browStateDifferenceThreshold)
-                    {
-                        mainWindow.incrementCounter();
-                        previousBrowState = browState;
-                    }
-                }
-                else
-                    previousBrowState = browState;
-
- 
-
-                Debug.WriteLine(browState.ToString());
-            }
 
 
             public void DrawFaceModel(DrawingContext drawingContext)
             {
-                if (!this.lastFaceTrackSucceeded || this.skeletonTrackingState != SkeletonTrackingState.Tracked)
-                {
-                    return;
-                }
-
-                calculateLogic();
-             
-
                 var faceModelGroup = new GeometryGroup();
 
                 faceModelGroup.Children.Add(createFacePart(leftBrow));
@@ -392,21 +374,7 @@ namespace FaceTrackingBasics
                 drawingContext.DrawGeometry(Brushes.Black, new Pen(Brushes.Black, 1.0), faceModelGroup);
             }
 
-            private double getLength(FeaturePoint a, FeaturePoint b)
-            {
-                Point p1 = confertToPoint(a);
-                Point p2 = confertToPoint(b);
-                return (Math.Sqrt(Math.Pow(p1.X - p2.X, 2) + Math.Pow(p1.Y - p2.Y, 2)));
-            }
 
-            private double getBrowState()
-            {
-                double averageBrowLength = (getLength(FeaturePoint.LeftOfLeftEyebrow, FeaturePoint.RightOfLeftEyebrow) +
-                    getLength(FeaturePoint.LeftOfRightEyebrow, FeaturePoint.RightOfRightEyebrow)) / 2.0;
-                double averageBrowToEyeDistance = (getLength(FeaturePoint.MiddleBottomOfLeftEyebrow, FeaturePoint.AboveMidUpperLeftEyelid) +
-                    getLength(FeaturePoint.MiddleBottomOfRightEyebrow, FeaturePoint.AboveMidUpperRightEyelid)) / 2.0;
-                return averageBrowToEyeDistance / averageBrowLength;
-            }
 
             /// <summary>
             /// Updates the face tracking information for this skeleton
@@ -449,22 +417,16 @@ namespace FaceTrackingBasics
                     }
                 }
             }
-
-            private struct FaceModelTriangle
-            {
-                public Point P1;
-                public Point P2;
-                public Point P3;
-            }
-
-            public bool juznie = false;
-            private static readonly double browStateDifferenceThreshold = 0.2;
-
         }
 
-        internal void setMainWindow(MainWindow window)
+        internal void setMainWindow(FaceWindow window)
         {
-            mainWindow = window;
+            faceWindow = window;
+        }
+
+        internal void setGame(Game game)
+        {
+            currentGame = game;
         }
     }
 }
