@@ -22,24 +22,28 @@
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
         <Button Content="Start" IsDefault="True" HorizontalAlignment="Left" Margin="328,326,0,0" VerticalAlignment="Top" Width="89" Click="Button_Click_1" Height="20"/>
-        <Grid HorizontalAlignment="Left" Height="93" Margin="10,10,0,0" VerticalAlignment="Top" Width="407">
+        <Grid HorizontalAlignment="Left" Height="120" Margin="10,10,0,0" VerticalAlignment="Top" Width="407">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="63*"/>
                 <ColumnDefinition Width="86*"/>
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
-                <RowDefinition Height="30*"/>
-                <RowDefinition Height="30*"/>
-                <RowDefinition Height="30*"/>
+                <RowDefinition Height="40*"/>
+                <RowDefinition Height="40*"/>
+                <RowDefinition Height="40*"/>
+                <RowDefinition Height="40*"/>
             </Grid.RowDefinitions>
-            <Label Content="Nazwa gry:" Grid.Column="0" Grid.Row="0" HorizontalAlignment="Left" Height="30"  Width="106"/>
-            <Label Content="Ruszanie brwiami" Grid.Column="0" Grid.Row="1" HorizontalAlignment="Left" Height="30"  Width="106"/>
-            <Label Content="Ruszanie ustami" Grid.Column="0" Grid.Row="2" HorizontalAlignment="Left" Height="30"  Width="106"/>
-            <Label Content="Ilość powtórzeń:" Grid.Column="1" Grid.Row="0" HorizontalAlignment="Left" Height="30"  Width="106"/>
-            <TextBox Name="Ex1" Grid.Column="1" Grid.Row="1" HorizontalAlignment="Left" Height="30" TextWrapping="Wrap" Text="3" Width="152"/>
-            <TextBox Name="Ex2" Grid.Column="1" Grid.Row="2" HorizontalAlignment="Left" Height="30" TextWrapping="Wrap" Text="10" Width="152"/>
+            <Label Content="Nazwa gry:" Grid.Column="0" Grid.Row="0" HorizontalAlignment="Left"/>
+            <Label Content="Ruszanie brwiami" Grid.Column="0" Grid.Row="1" HorizontalAlignment="Left"/>
+            <Label Content="Uśmiechanie się" Grid.Column="0" Grid.Row="2" HorizontalAlignment="Left"/>
+            <Label Content="Szerokie otwieranie ust" Grid.Column="0" Grid.Row="3" HorizontalAlignment="Left"/>
+            <Label Content="Liczba powtórzeń:" Grid.Column="1" Grid.Row="0" HorizontalAlignment="Left"/>
+            <TextBox Name="Ex1" Grid.Column="1" Grid.Row="1" HorizontalAlignment="Left" TextWrapping="Wrap" Text="10" Width="100"/>
+            <TextBox Name="Ex2" Grid.Column="1" Grid.Row="2" HorizontalAlignment="Left" TextWrapping="Wrap" Text="10" Width="100"/>
+            <TextBox Name="Ex3" Grid.Column="1" Grid.Row="3" HorizontalAlignment="Left" TextWrapping="Wrap" Text="10" Width="100"/>
         </Grid>
-        <Slider HorizontalAlignment="Left" Height="20" Margin="10,326,0,0" VerticalAlignment="Top" Width="298" Minimum="0" Maximum="3" TickFrequency="100" Value="1" ValueChanged="Slider_ValueChanged_1"/>
+        <Slider HorizontalAlignment="Left" Height="20" Margin="10,326,0,0" VerticalAlignment="Top" Width="298" Minimum="0" Maximum="2" TickFrequency="100" Value="1" ValueChanged="Slider_ValueChanged_1" TickPlacement="BottomRight" AutoToolTipPlacement="BottomRight" AutoToolTipPrecision="2"/>
+        <Label Content="Trudność ćwiczeń:" HorizontalAlignment="Left" Margin="10,295,0,0" VerticalAlignment="Top"/>
 
     </Grid>
 </Window>

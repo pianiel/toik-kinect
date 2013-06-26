@@ -8,18 +8,15 @@ namespace FaceTrackingBasics
 {
     class WideLipsGame : AbstractGame
     {
-        private static string INSTRUCTIONS = "Szeroko otwieraj i zamykaj usta";
-        private static double THRESHOLD = 0.2;
+        private static string INSTRUCTIONS = "Uśmiechaj się szeroko i rób dzióbek";
 
-        public WideLipsGame(int targetScore) : base(targetScore, THRESHOLD, INSTRUCTIONS){}
+        public WideLipsGame(int targetScore) : base(targetScore, INSTRUCTIONS){}
 
         protected override double getState(EnumIndexableCollection<FeaturePoint, PointF> facePoints)
         {
-            double averageBrowLength = (GameUtils.getLength(FeaturePoint.LeftOfLeftEyebrow, FeaturePoint.RightOfLeftEyebrow, facePoints) +
-                GameUtils.getLength(FeaturePoint.LeftOfRightEyebrow, FeaturePoint.RightOfRightEyebrow, facePoints)) / 2.0;
-            double averageBrowToEyeDistance = (GameUtils.getLength(FeaturePoint.MiddleBottomOfLeftEyebrow, FeaturePoint.AboveMidUpperLeftEyelid, facePoints) +
-                GameUtils.getLength(FeaturePoint.MiddleBottomOfRightEyebrow, FeaturePoint.AboveMidUpperRightEyelid, facePoints)) / 2.0;
-            return averageBrowToEyeDistance / averageBrowLength;
+            double normLength = GameUtils.getLength(FeaturePoint.AboveMidUpperLeftEyelid, FeaturePoint.AboveMidUpperRightEyelid, facePoints);
+            double lipsLength = GameUtils.getLength(FeaturePoint.OutsideLeftCornerMouth, FeaturePoint.OutsideRightCornerMouth, facePoints);
+            return lipsLength / normLength;
         }
     }
 }

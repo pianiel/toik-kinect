@@ -9,7 +9,6 @@ namespace FaceTrackingBasics
     class BrowGame : AbstractGame
     {
         private static string INSTRUCTIONS = "Ruszaj brwiami w górę i w dół";
-        private static double THRESHOLD = 0.2;
 
         protected override double getState(EnumIndexableCollection<FeaturePoint, PointF> facePoints)
         {
@@ -20,6 +19,6 @@ namespace FaceTrackingBasics
             return averageBrowToEyeDistance / averageBrowLength;
         }
 
-        public BrowGame(int _targetScore) : base (_targetScore, THRESHOLD, INSTRUCTIONS){}
+        public BrowGame(int _targetScore) : base (_targetScore, INSTRUCTIONS){}
     }
 }

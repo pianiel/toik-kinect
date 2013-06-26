@@ -16,10 +16,9 @@ namespace FaceTrackingBasics
             return targetScore;
         }
 
-        public AbstractGame(int _targetScore, double threshold, string _instructions)
+        public AbstractGame(int _targetScore, string _instructions)
         {
             targetScore = _targetScore;
-            stateDifferenceThreshold = threshold;
             instructions = _instructions;
         }
 
@@ -28,20 +27,39 @@ namespace FaceTrackingBasics
             return instructions;
         }
 
-        private double stateDifferenceThreshold;
         private double previousState = 0.0;
+        private double average;
+        private double deviation = 0.0;
+        private int measures = 0;
+        private int initialStatesSkipCount = 4;
 
         protected abstract double getState(EnumIndexableCollection<FeaturePoint, PointF> facePoints);
 
         public bool calculateLogic(EnumIndexableCollection<FeaturePoint, PointF> facePoints, double difficulty)
         {
             double state = getState(facePoints);
+            measures++;
+            if (measures == 1)
+            {
+                average = state;
+            }
+            else
+            {
+                double oldAverage = average;
+                average = (state + (average * (measures - 1))) / measures;
+                deviation = deviation + ((state - oldAverage) * (state - average));
+            }
 
             if (previousState != 0.0)
             {
-                if (Math.Abs(previousState - state) > stateDifferenceThreshold * difficulty)
+                if ((previousState < average && state > Math.Sqrt(deviation/measures)*difficulty + average)
+                    ||
+                        (previousState > average && state < average - Math.Sqrt(deviation/measures)*difficulty/2))
                 {
                     previousState = state;
+                    initialStatesSkipCount--;
+                    if (initialStatesSkipCount > 0)
+                        return false;
                     return true;
                 }
             }

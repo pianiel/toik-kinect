@@ -95,6 +95,7 @@
     </Compile>
     <Compile Include="Game.cs" />
     <Compile Include="GameUtils.cs" />
+    <Compile Include="OpenMouthGame.cs" />
     <Compile Include="WideLipsGame.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
