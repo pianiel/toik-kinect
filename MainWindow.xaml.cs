@@ -36,7 +36,7 @@ namespace FaceTrackingBasics
 
         private void WindowClosed(object sender, EventArgs e)
         {
-            
+            this.Close();
         }
 
         
@@ -48,7 +48,7 @@ namespace FaceTrackingBasics
             if (browTarget > 0)
                 games.Add(new BrowGame(browTarget));
             if (lipsTarget > 0)
-                games.Add(new LipsGame(lipsTarget));
+                games.Add(new WideLipsGame(lipsTarget));
             faceWindow = new FaceWindow(games, difficulty);
             
             faceWindow.Show();

@@ -9,7 +9,7 @@ namespace FaceTrackingBasics
     public interface Game
     {
         bool calculateLogic(EnumIndexableCollection<FeaturePoint, PointF> facePoints, double difficulty);
-
+        string getInstructions();
         int getTargetScore();
     }
 }

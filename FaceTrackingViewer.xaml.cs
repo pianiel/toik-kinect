@@ -301,29 +301,74 @@ namespace FaceTrackingBasics
                                      };
 
             private FeaturePoint[] lips = {
-                //FeaturePoint.RightCornerMouth,
                 FeaturePoint.OutsideLeftCornerMouth,
                 FeaturePoint.LeftBottomLowerLip,
-                //FeaturePoint.MiddleBottomLowerLip,
+                FeaturePoint.MiddleBottomLip,
                 FeaturePoint.RightBottomLowerLip,
-                //FeaturePoint.LeftCornerMouth,
                 FeaturePoint.OutsideRightCornerMouth,
                 FeaturePoint.RightTopUpperLip,
+                FeaturePoint.RightTopDipUpperLip,
                 FeaturePoint.MiddleTopDipUpperLip,
+                FeaturePoint.LeftTopDipUpperLip,
                 FeaturePoint.LeftTopUpperLip
                                           };
-                /*FeaturePoint.LeftBottomUpperLip,
-                FeaturePoint.LeftTopDipUpperLip,
+
+            private FeaturePoint[] innerLips = {
+                FeaturePoint.RightCornerMouth,
                 FeaturePoint.LeftTopLowerLip,
-                FeaturePoint.MiddleBottomUpperLip,
                 FeaturePoint.MiddleTopLowerLip,
-                
-                FeaturePoint.OutsideRightCornerMouth,
+                FeaturePoint.RightTopLowerLip,
+                FeaturePoint.LeftCornerMouth,
                 FeaturePoint.RightBottomUpperLip,
-                FeaturePoint.RightTopDipUpperLip,
-                FeaturePoint.RightTopLowerLip
+                FeaturePoint.MiddleBottomUpperLip,
+                FeaturePoint.LeftBottomUpperLip                
+                                               };
+
+            private FeaturePoint[] head = {
+                FeaturePoint.ContourBottomChin,
+                FeaturePoint.ContourLeftChin,
+                FeaturePoint.ContourLeftMouth,
+                FeaturePoint.ContourLeftCheek,
+                FeaturePoint.ContourLeftEye,
+                FeaturePoint.ContourLeftTemple,
+                FeaturePoint.ContourLeftHair,
+                FeaturePoint.ContourLeftTop,
+                FeaturePoint.ContourTopSkull,
+                FeaturePoint.ContourRightTop,
+                FeaturePoint.ContourRightHair,
+                FeaturePoint.ContourRightTemple,
+                FeaturePoint.ContourRightEye,
+                FeaturePoint.ContourRightCheek,
+                FeaturePoint.ContourRightMouth,
+                FeaturePoint.ContourRightChin
                                           };
-            */
+
+
+            private FeaturePoint[] nose = {
+                FeaturePoint.UnderNoseLeftCorner,
+                FeaturePoint.UnderNoseLeft,
+                FeaturePoint.UnderNoseMiddle,
+                FeaturePoint.UnderNoseRight,
+                FeaturePoint.UnderNoseRightCorner,
+                FeaturePoint.NoseRightBottomCorner,
+                FeaturePoint.NoseRightSide,
+                FeaturePoint.NoseRightTop,
+                FeaturePoint.NoseLeftTop,
+                FeaturePoint.NoseLeftSide,
+                FeaturePoint.NoseLeftBottomCorner
+                                           };
+
+            private FeaturePoint[] noseBottom = {
+                FeaturePoint.UnderNoseLeftCorner,
+                FeaturePoint.UnderNoseLeft,
+                FeaturePoint.UnderNoseMiddle,
+                FeaturePoint.UnderNoseRight,
+                FeaturePoint.UnderNoseRightCorner,
+                FeaturePoint.NoseRightBottom,
+                FeaturePoint.NoseTip,
+                FeaturePoint.NoseLeftBottom
+                                                };
+
             public int LastTrackedFrame { get; set; }
 
             public void Dispose()
@@ -370,6 +415,11 @@ namespace FaceTrackingBasics
                 faceModelGroup.Children.Add(createFacePart(rightEye));
 
                 faceModelGroup.Children.Add(createFacePart(lips));
+                faceModelGroup.Children.Add(createFacePart(innerLips));
+
+                faceModelGroup.Children.Add(createFacePart(head));
+                faceModelGroup.Children.Add(createFacePart(nose));
+                faceModelGroup.Children.Add(createFacePart(noseBottom));
 
                 drawingContext.DrawGeometry(Brushes.Black, new Pen(Brushes.Black, 1.0), faceModelGroup);
             }

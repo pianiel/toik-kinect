@@ -36,8 +36,8 @@
             <Label Content="Ruszanie brwiami" Grid.Column="0" Grid.Row="1" HorizontalAlignment="Left" Height="30"  Width="106"/>
             <Label Content="Ruszanie ustami" Grid.Column="0" Grid.Row="2" HorizontalAlignment="Left" Height="30"  Width="106"/>
             <Label Content="Ilość powtórzeń:" Grid.Column="1" Grid.Row="0" HorizontalAlignment="Left" Height="30"  Width="106"/>
-            <TextBox Name="Ex1" Grid.Column="1" Grid.Row="1" HorizontalAlignment="Left" Height="30" TextWrapping="Wrap" Text="0" Width="152"/>
-            <TextBox Name="Ex2" Grid.Column="1" Grid.Row="2" HorizontalAlignment="Left" Height="30" TextWrapping="Wrap" Text="0" Width="152"/>
+            <TextBox Name="Ex1" Grid.Column="1" Grid.Row="1" HorizontalAlignment="Left" Height="30" TextWrapping="Wrap" Text="3" Width="152"/>
+            <TextBox Name="Ex2" Grid.Column="1" Grid.Row="2" HorizontalAlignment="Left" Height="30" TextWrapping="Wrap" Text="10" Width="152"/>
         </Grid>
         <Slider HorizontalAlignment="Left" Height="20" Margin="10,326,0,0" VerticalAlignment="Top" Width="298" Minimum="0" Maximum="3" TickFrequency="100" Value="1" ValueChanged="Slider_ValueChanged_1"/>
 

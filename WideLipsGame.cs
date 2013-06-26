@@ -6,10 +6,12 @@ using System.Text;
 
 namespace FaceTrackingBasics
 {
-    class BrowGame : AbstractGame
+    class WideLipsGame : AbstractGame
     {
-        private static string INSTRUCTIONS = "Ruszaj brwiami w górę i w dół";
+        private static string INSTRUCTIONS = "Szeroko otwieraj i zamykaj usta";
         private static double THRESHOLD = 0.2;
+
+        public WideLipsGame(int targetScore) : base(targetScore, THRESHOLD, INSTRUCTIONS){}
 
         protected override double getState(EnumIndexableCollection<FeaturePoint, PointF> facePoints)
         {
@@ -19,7 +21,5 @@ namespace FaceTrackingBasics
                 GameUtils.getLength(FeaturePoint.MiddleBottomOfRightEyebrow, FeaturePoint.AboveMidUpperRightEyelid, facePoints)) / 2.0;
             return averageBrowToEyeDistance / averageBrowLength;
         }
-
-        public BrowGame(int _targetScore) : base (_targetScore, THRESHOLD, INSTRUCTIONS){}
     }
 }

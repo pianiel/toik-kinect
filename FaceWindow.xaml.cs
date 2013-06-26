@@ -46,6 +46,8 @@ namespace FaceTrackingBasics
             incrementCounter();
 
             TaskProgressBar.Maximum = (int)games[0].getTargetScore() ;
+            GameName.Text = games[0].getInstructions();
+
             faceTrackingViewer.setMainWindow(this);
             faceTrackingViewer.setGame(games[0]);
 
@@ -61,6 +63,7 @@ namespace FaceTrackingBasics
                 faceTrackingViewer.setGame(games[currentGameIndex]);
                 TaskProgressBar.Maximum = games[currentGameIndex].getTargetScore();
                 TaskProgressBar.Value = 0;
+                GameName.Text = games[currentGameIndex].getInstructions();
             }
             else
             {

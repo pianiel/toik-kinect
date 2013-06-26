@@ -20,13 +20,17 @@
     <Grid Name="layoutGrid" Margin="10 0 10 10">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <DockPanel Grid.Row="0" Margin="0">
-            <TextBlock Name="Counter" DockPanel.Dock="Right" Margin="10" VerticalAlignment="Bottom" Foreground="{StaticResource MediumGreyBrush}" FontFamily="Segoe UI" FontSize="18">Face Tracking Basics</TextBlock>
+            <TextBlock Name="Counter" DockPanel.Dock="Right" Margin="10" VerticalAlignment="Bottom" Foreground="{StaticResource MediumGreyBrush}" FontFamily="Segoe UI" FontSize="18" HorizontalAlignment="Right">Wynik: 0/0</TextBlock>
             <ProgressBar Name="TaskProgressBar" Height="20" Margin="10" DockPanel.Dock="Bottom"/>
         </DockPanel>
-        <Viewbox Grid.Row="1" Stretch="Uniform" HorizontalAlignment="Center" Grid.RowSpan="2" Width="742">
+        <DockPanel Grid.Row="1" Margin="0">
+            <TextBlock Name="GameName" DockPanel.Dock="Right" Margin="10" VerticalAlignment="Bottom" Foreground="{StaticResource MediumGreyBrush}" FontFamily="Segoe UI" FontSize="18" HorizontalAlignment="Center">Nazwa gry</TextBlock>
+        </DockPanel>
+        <Viewbox Grid.Row="2" Stretch="Uniform" HorizontalAlignment="Center" Grid.RowSpan="2" Width="742">
             <Grid Name="MainGrid" Width="640" Height="480">
                 <Image Name="ColorImage"/>
                 <local:FaceTrackingViewer x:Name="faceTrackingViewer" />
