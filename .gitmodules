@@ -1,0 +1,6 @@
+[submodule "toik-kinect-toolkit"]
+	path = toik-kinect-toolkit
+	url = https://github.com/pianiel/toik-kinect-toolkit.git
+[submodule "toik-kinect-toolkit-facetracking"]
+	path = toik-kinect-toolkit-facetracking
+	url = https://github.com/pianiel/toik-kinect-toolkit-facetracking.git
