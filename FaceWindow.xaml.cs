@@ -10,6 +10,7 @@ namespace FaceTrackingBasics
 {
     using System;
     using System.Windows;
+    using System.Windows.Threading;
     using System.Windows.Data;
     using System.Windows.Media;
     using System.Windows.Media.Imaging;
@@ -25,13 +26,14 @@ namespace FaceTrackingBasics
     {
         private static readonly int Bgr32BytesPerPixel = (PixelFormats.Bgr32.BitsPerPixel + 7) / 8;
         private readonly KinectSensorChooser sensorChooser = new KinectSensorChooser();
-        private WriteableBitmap colorImageWritableBitmap;
+        /*private WriteableBitmap colorImageWritableBitmap;
         private byte[] colorImageData;
-        private ColorImageFormat currentColorImageFormat = ColorImageFormat.Undefined;
-        private long score = -1;
+        private ColorImageFormat currentColorImageFormat = ColorImageFormat.Undefined;*/
+        private long score = 0;
         private double difficulty = 1.0;
         private int currentGameIndex;
         private List<Game> games;
+        private GameEnded gameEndedWindow;
 
         public FaceWindow(List <Game> _games, double difficulty)
         {
@@ -39,19 +41,36 @@ namespace FaceTrackingBasics
             currentGameIndex = 0;
             games = _games;
 
+            gameEndedWindow = new GameEnded();
+
             var faceTrackingViewerBinding = new Binding("Kinect") { Source = sensorChooser };
             faceTrackingViewer.SetBinding(FaceTrackingViewer.KinectProperty, faceTrackingViewerBinding);
 
             sensorChooser.KinectChanged += SensorChooserOnKinectChanged;
-            incrementCounter();
 
             TaskProgressBar.Maximum = (int)games[0].getTargetScore() ;
-            GameName.Text = games[0].getInstructions();
+            setWaitText();
 
             faceTrackingViewer.setMainWindow(this);
             faceTrackingViewer.setGame(games[0]);
 
             sensorChooser.Start();
+        }
+
+        public void setWaitText()
+        {
+            GameName.Text = "Proszę czekać...";
+        }
+
+        public void setGameText()
+        {
+            if (score < games[currentGameIndex].getTargetScore())
+                GameName.Text = games[currentGameIndex].getInstructions();
+        }
+
+        private String getScoreText()
+        {
+            return "Wynik: " + score.ToString() + "/" + games[currentGameIndex].getTargetScore().ToString();
         }
 
         private void switchGame()
@@ -61,9 +80,10 @@ namespace FaceTrackingBasics
             if (currentGameIndex < games.Count)
             {
                 faceTrackingViewer.setGame(games[currentGameIndex]);
+                Counter.Text = getScoreText();
                 TaskProgressBar.Maximum = games[currentGameIndex].getTargetScore();
                 TaskProgressBar.Value = 0;
-                GameName.Text = games[currentGameIndex].getInstructions();
+                setGameText();
             }
             else
             {
@@ -75,12 +95,27 @@ namespace FaceTrackingBasics
         public void incrementCounter()
         {
             score++;
-            Counter.Text = "Wynik: " + score.ToString() + "/" + games[currentGameIndex].getTargetScore().ToString();
+            if (score > games[currentGameIndex].getTargetScore())
+                return;
+            Counter.Text = getScoreText();
             TaskProgressBar.Value = (int)score;
             if (score == games[currentGameIndex].getTargetScore())
             {
-                switchGame();
+                DispatcherTimer timer = new DispatcherTimer();
+                timer.Interval = TimeSpan.FromSeconds(5d);
+                timer.Tick += TimerTick;
+                gameEndedWindow.Show();
+                timer.Start();
             }
+        }
+
+        private void TimerTick(object sender, EventArgs e)
+        {
+            DispatcherTimer timer = (DispatcherTimer)sender;
+            timer.Stop();
+            timer.Tick -= TimerTick;
+            gameEndedWindow.Hide();
+            switchGame();
         }
 
         private void SensorChooserOnKinectChanged(object sender, KinectChangedEventArgs kinectChangedEventArgs)
@@ -140,6 +175,7 @@ namespace FaceTrackingBasics
         {
             sensorChooser.Stop();
             faceTrackingViewer.Dispose();
+            gameEndedWindow.Close();
             this.Close();
         }
 

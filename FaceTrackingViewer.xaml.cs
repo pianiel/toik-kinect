@@ -96,9 +96,14 @@ namespace FaceTrackingBasics
                 {
                     if (faceInformation.lastFaceTrackSucceeded && faceInformation.skeletonTrackingState == SkeletonTrackingState.Tracked)
                     {
+                        faceWindow.setGameText();
                         if (currentGame.calculateLogic(faceInformation.facePoints, faceWindow.getDifficulty()))
-                            faceWindow.incrementCounter(); 
+                            faceWindow.incrementCounter();
                         faceInformation.DrawFaceModel(drawingContext);
+                    }
+                    else
+                    {
+                        faceWindow.setWaitText();
                     }
 
                     
@@ -402,12 +407,19 @@ namespace FaceTrackingBasics
             }
 
 
-
-
-            public void DrawFaceModel(DrawingContext drawingContext)
+            private Transform getImageTransform ()
             {
-                var faceModelGroup = new GeometryGroup();
+                Point p = GameUtils.convertToPoint(FeaturePoint.NoseTip, facePoints);
+                ScaleTransform transform = new ScaleTransform();
+                transform.CenterX=p.X;
+                transform.CenterY=p.Y;
+                transform.ScaleX=2;
+                transform.ScaleY=2;
+                return transform;
+            }
 
+            private void addFaceParts(GeometryGroup faceModelGroup)
+            {
                 faceModelGroup.Children.Add(createFacePart(leftBrow));
                 faceModelGroup.Children.Add(createFacePart(rightBrow));
 
@@ -420,7 +432,14 @@ namespace FaceTrackingBasics
                 faceModelGroup.Children.Add(createFacePart(head));
                 faceModelGroup.Children.Add(createFacePart(nose));
                 faceModelGroup.Children.Add(createFacePart(noseBottom));
+            }
 
+            public void DrawFaceModel(DrawingContext drawingContext)
+            {
+                GeometryGroup faceModelGroup = new GeometryGroup();
+                addFaceParts(faceModelGroup);
+             
+                drawingContext.PushTransform(getImageTransform());
                 drawingContext.DrawGeometry(Brushes.Black, new Pen(Brushes.Black, 1.0), faceModelGroup);
             }
 

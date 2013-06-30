@@ -46,13 +46,16 @@ namespace FaceTrackingBasics
             int browTarget = Convert.ToInt32(Ex1.Text);
             int lipsTarget = Convert.ToInt32(Ex2.Text);
             int mouthTarget = Convert.ToInt32(Ex3.Text);
-            if (browTarget > 0)
-                games.Add(new BrowGame(browTarget));
-            if (lipsTarget > 0)
-                games.Add(new WideLipsGame(lipsTarget));
-            if (mouthTarget > 0)
-                games.Add(new OpenMouthGame(mouthTarget));
-            
+            int cycles = Convert.ToInt32(cyclesCount.Text);
+            for (int i = 0; i < cycles; i++)
+            {
+                if (browTarget > 0)
+                    games.Add(new BrowGame(browTarget));
+                if (lipsTarget > 0)
+                    games.Add(new WideLipsGame(lipsTarget));
+                if (mouthTarget > 0)
+                    games.Add(new OpenMouthGame(mouthTarget));
+            }
             faceWindow = new FaceWindow(games, difficulty);
             
             faceWindow.Show();

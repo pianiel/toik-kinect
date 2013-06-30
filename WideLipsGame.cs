@@ -8,9 +8,10 @@ namespace FaceTrackingBasics
 {
     class WideLipsGame : AbstractGame
     {
-        private static string INSTRUCTIONS = "Uśmiechaj się szeroko i rób dzióbek";
+        private static string LOW_INSTRUCTIONS = "Uśmiechnij się szeroko";
+        private static string HIGH_INSTRUCTIONS = "Zwęź usta";
 
-        public WideLipsGame(int targetScore) : base(targetScore, INSTRUCTIONS){}
+        public WideLipsGame(int targetScore) : base(targetScore, LOW_INSTRUCTIONS, HIGH_INSTRUCTIONS){}
 
         protected override double getState(EnumIndexableCollection<FeaturePoint, PointF> facePoints)
         {

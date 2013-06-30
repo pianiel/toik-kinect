@@ -8,7 +8,7 @@ namespace FaceTrackingBasics
 {
     abstract class AbstractGame : Game
     {
-        private string instructions;
+        private string instructions, lowInstructions, highInstructions;
         private int targetScore;
 
         public int getTargetScore()
@@ -16,10 +16,12 @@ namespace FaceTrackingBasics
             return targetScore;
         }
 
-        public AbstractGame(int _targetScore, string _instructions)
+        public AbstractGame(int _targetScore, string _lowInstructions, string _highInstructions)
         {
             targetScore = _targetScore;
-            instructions = _instructions;
+            instructions = _highInstructions;
+            lowInstructions = _lowInstructions;
+            highInstructions = _highInstructions;
         }
 
         public string getInstructions()
@@ -31,9 +33,30 @@ namespace FaceTrackingBasics
         private double average;
         private double deviation = 0.0;
         private int measures = 0;
-        private int initialStatesSkipCount = 4;
+        private int initialStatesSkipCount = 5;
 
         protected abstract double getState(EnumIndexableCollection<FeaturePoint, PointF> facePoints);
+
+        private bool countPoint(double state)
+        {
+            previousState = state;
+            initialStatesSkipCount--;
+            if (initialStatesSkipCount > 0)
+                return false;
+            return true;
+        }
+
+        private bool countHighPoint(double state)
+        {
+            instructions = highInstructions;
+            return countPoint(state);
+        }
+
+        private bool countLowPoint(double state)
+        {
+            instructions = lowInstructions;
+            return countPoint(state);
+        }
 
         public bool calculateLogic(EnumIndexableCollection<FeaturePoint, PointF> facePoints, double difficulty)
         {
@@ -52,16 +75,10 @@ namespace FaceTrackingBasics
 
             if (previousState != 0.0)
             {
-                if ((previousState < average && state > Math.Sqrt(deviation/measures)*difficulty + average)
-                    ||
-                        (previousState > average && state < average - Math.Sqrt(deviation/measures)*difficulty/2))
-                {
-                    previousState = state;
-                    initialStatesSkipCount--;
-                    if (initialStatesSkipCount > 0)
-                        return false;
-                    return true;
-                }
+                if (previousState < average && state > Math.Sqrt(deviation / measures) * difficulty + average)
+                    return countHighPoint(state);
+                else if (previousState > average && state < average - Math.Sqrt(deviation / measures) * difficulty / 2)
+                    return countLowPoint(state);
             }
             else
                 previousState = state;

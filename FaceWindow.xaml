@@ -5,8 +5,8 @@
         xmlns:local="clr-namespace:FaceTrackingBasics"
         Title="Face Tracking Basics"
         Closed="WindowClosed"
-        Height="735" Width="770" 
-        >
+        WindowStartupLocation="CenterScreen"
+        Height="735" Width="837" Icon="/FaceTrackingBasics-WPF;component/Images/Kinect.ico">
 
     <Window.Resources>
         <SolidColorBrush x:Key="MediumGreyBrush" Color="#ff6e6e6e"/>
@@ -24,16 +24,16 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <DockPanel Grid.Row="0" Margin="0">
-            <TextBlock Name="Counter" DockPanel.Dock="Right" Margin="10" VerticalAlignment="Bottom" Foreground="{StaticResource MediumGreyBrush}" FontFamily="Segoe UI" FontSize="18" HorizontalAlignment="Right">Wynik: 0/0</TextBlock>
-            <ProgressBar Name="TaskProgressBar" Height="20" Margin="10" DockPanel.Dock="Bottom"/>
+            <TextBlock Name="Counter" DockPanel.Dock="Right" Margin="20" VerticalAlignment="Bottom" Foreground="{StaticResource MediumGreyBrush}" FontFamily="Segoe UI" FontSize="30" HorizontalAlignment="Right">Wynik: 0/0</TextBlock>
+            <ProgressBar Name="TaskProgressBar" Height="40" Margin="20" DockPanel.Dock="Bottom"/>
         </DockPanel>
         <DockPanel Grid.Row="1" Margin="0">
-            <TextBlock Name="GameName" DockPanel.Dock="Right" Margin="10" VerticalAlignment="Bottom" Foreground="{StaticResource MediumGreyBrush}" FontFamily="Segoe UI" FontSize="18" HorizontalAlignment="Center">Nazwa gry</TextBlock>
+            <TextBlock Name="GameName" DockPanel.Dock="Right" Margin="20" VerticalAlignment="Bottom" Foreground="{StaticResource MediumGreyBrush}" FontFamily="Segoe UI" FontSize="30" HorizontalAlignment="Center">Nazwa gry</TextBlock>
         </DockPanel>
-        <Viewbox Grid.Row="2" Stretch="Uniform" HorizontalAlignment="Center" Grid.RowSpan="2" Width="742">
+        <Viewbox Grid.Row="2" Stretch="Uniform" HorizontalAlignment="Center" Width="742" Margin="26,6,26,0">
             <Grid Name="MainGrid" Width="640" Height="480">
                 <Image Name="ColorImage"/>
-                <local:FaceTrackingViewer x:Name="faceTrackingViewer" />
+                <local:FaceTrackingViewer x:Name="faceTrackingViewer" Margin="0,26,0,0" />
             </Grid>
         </Viewbox>
    </Grid>

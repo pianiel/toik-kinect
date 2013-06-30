@@ -8,9 +8,10 @@ namespace FaceTrackingBasics
 {
     class OpenMouthGame : AbstractGame
     {
-        private static string INSTRUCTIONS = "Szeroko otwieraj i zamykaj usta";
+        private static string LOW_INSTRUCTIONS = "Szeroko otwórz usta";
+        private static string HIGH_INSTRUCTIONS = "Zamknij usta";
 
-        public OpenMouthGame(int targetScore) : base(targetScore, INSTRUCTIONS) { }
+        public OpenMouthGame(int targetScore) : base(targetScore, LOW_INSTRUCTIONS, HIGH_INSTRUCTIONS) { }
 
         protected override double getState(EnumIndexableCollection<FeaturePoint, PointF> facePoints)
         {
