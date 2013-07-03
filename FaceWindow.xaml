@@ -3,7 +3,7 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:local="clr-namespace:FaceTrackingBasics"
-        Title="Face Tracking Basics"
+        Title="FaceExcercise"
         Closed="WindowClosed"
         WindowStartupLocation="CenterScreen"
         Height="735" Width="837" Icon="/FaceTrackingBasics-WPF;component/Images/Kinect.ico">

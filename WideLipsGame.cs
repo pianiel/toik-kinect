@@ -19,5 +19,10 @@ namespace FaceTrackingBasics
             double lipsLength = GameUtils.getLength(FeaturePoint.OutsideLeftCornerMouth, FeaturePoint.OutsideRightCornerMouth, facePoints);
             return lipsLength / normLength;
         }
+
+        public override string getName()
+        {
+            return "Uśmiechanie się";
+        }
     }
 }

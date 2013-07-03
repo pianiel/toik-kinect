@@ -19,5 +19,10 @@ namespace FaceTrackingBasics
             double mouthHeight = GameUtils.getLength(FeaturePoint.MiddleTopDipUpperLip, FeaturePoint.MiddleBottomLip, facePoints);
             return mouthHeight / normLength;
         }
+
+        public override string getName()
+        {
+            return "Szerokie otwieranie ust";
+        }
     }
 }

@@ -29,11 +29,30 @@ namespace FaceTrackingBasics
             return instructions;
         }
 
+
+        private double minimum = Double.MaxValue, maximum = Double.MinValue;
         private double previousState = 0.0;
         private double average;
         private double deviation = 0.0;
         private int measures = 0;
         private int initialStatesSkipCount = 5;
+
+
+
+        public double getDeviation()
+        {
+            return deviation;
+        }
+        public double getMinimum()
+        {
+            return minimum;
+        }
+        public double getMaximum()
+        {
+            return maximum;     
+        }
+
+        public abstract string getName();
 
         protected abstract double getState(EnumIndexableCollection<FeaturePoint, PointF> facePoints);
 
@@ -58,9 +77,18 @@ namespace FaceTrackingBasics
             return countPoint(state);
         }
 
+        private void updateMinAndMax(double state)
+        {
+            if (state < minimum)
+                minimum = state;
+            if (state > maximum)
+                maximum = state;
+        }
+
         public bool calculateLogic(EnumIndexableCollection<FeaturePoint, PointF> facePoints, double difficulty)
         {
             double state = getState(facePoints);
+            updateMinAndMax(state);
             measures++;
             if (measures == 1)
             {

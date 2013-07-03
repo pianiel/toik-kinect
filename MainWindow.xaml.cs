@@ -25,6 +25,7 @@ namespace FaceTrackingBasics
     {
         private FaceWindow faceWindow = null;
         private double difficulty;
+        List<Game> games;
 
         public MainWindow()
         {
@@ -42,23 +43,34 @@ namespace FaceTrackingBasics
         
         private void Button_Click_1(object sender, RoutedEventArgs e)
         {
-            List <Game> games = new List<Game>();
-            int browTarget = Convert.ToInt32(Ex1.Text);
-            int lipsTarget = Convert.ToInt32(Ex2.Text);
-            int mouthTarget = Convert.ToInt32(Ex3.Text);
-            int cycles = Convert.ToInt32(cyclesCount.Text);
-            for (int i = 0; i < cycles; i++)
+            Start.IsEnabled = false;
+            games = new List<Game>();
+            try
             {
-                if (browTarget > 0)
-                    games.Add(new BrowGame(browTarget));
-                if (lipsTarget > 0)
-                    games.Add(new WideLipsGame(lipsTarget));
-                if (mouthTarget > 0)
-                    games.Add(new OpenMouthGame(mouthTarget));
+                int browTarget = Convert.ToInt32(Ex1.Text);
+                int lipsTarget = Convert.ToInt32(Ex2.Text);
+                int mouthTarget = Convert.ToInt32(Ex3.Text);
+                int cycles = Convert.ToInt32(cyclesCount.Text);
+                if (browTarget < 0 || lipsTarget < 0 || mouthTarget < 0 || cycles < 1)
+                    throw new FormatException();
+                for (int i = 0; i < cycles; i++)
+                {
+                    if (browTarget > 0)
+                        games.Add(new BrowGame(browTarget));
+                    if (lipsTarget > 0)
+                        games.Add(new WideLipsGame(lipsTarget));
+                    if (mouthTarget > 0)
+                        games.Add(new OpenMouthGame(mouthTarget));
+                }
+                faceWindow = new FaceWindow(games, difficulty, this);
+
+                faceWindow.Show();
             }
-            faceWindow = new FaceWindow(games, difficulty);
-            
-            faceWindow.Show();
+            catch (FormatException)
+            {
+                Start.IsEnabled = true;
+                return;
+            }
         }
 
         private void Slider_ValueChanged_1(object sender, RoutedPropertyChangedEventArgs<double> e)
@@ -66,6 +78,11 @@ namespace FaceTrackingBasics
             difficulty = e.NewValue;
             if (faceWindow != null)
                 faceWindow.setDifficulty(difficulty);
+        }
+
+        internal void displayStatistics()
+        {
+            new ScoreWindow(games).Show();
         }
     }
 }

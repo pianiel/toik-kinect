@@ -20,6 +20,11 @@ namespace FaceTrackingBasics
             return averageBrowToEyeDistance / averageBrowLength;
         }
 
+        public override string getName()
+        {
+            return "Ruszanie brwiami";
+        }
+
         public BrowGame(int _targetScore) : base (_targetScore, LOW_INSTRUCTIONS, HIGH_INSTRUCTIONS){}
     }
 }

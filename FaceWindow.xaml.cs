@@ -24,19 +24,17 @@ namespace FaceTrackingBasics
     /// 
     public partial class FaceWindow : Window
     {
-        private static readonly int Bgr32BytesPerPixel = (PixelFormats.Bgr32.BitsPerPixel + 7) / 8;
         private readonly KinectSensorChooser sensorChooser = new KinectSensorChooser();
-        /*private WriteableBitmap colorImageWritableBitmap;
-        private byte[] colorImageData;
-        private ColorImageFormat currentColorImageFormat = ColorImageFormat.Undefined;*/
         private long score = 0;
         private double difficulty = 1.0;
         private int currentGameIndex;
         private List<Game> games;
         private GameEnded gameEndedWindow;
+        private MainWindow mainWindow;
 
-        public FaceWindow(List <Game> _games, double difficulty)
+        public FaceWindow(List <Game> _games, double difficulty, MainWindow _mainWindow)
         {
+            mainWindow = _mainWindow;
             InitializeComponent();
             currentGameIndex = 0;
             games = _games;
@@ -87,7 +85,8 @@ namespace FaceTrackingBasics
             }
             else
             {
-                WindowClosed(this, new EventArgs());
+                this.Close();
+                //WindowClosed(this, new EventArgs());
             }
                 
         }
@@ -176,7 +175,9 @@ namespace FaceTrackingBasics
             sensorChooser.Stop();
             faceTrackingViewer.Dispose();
             gameEndedWindow.Close();
-            this.Close();
+            mainWindow.displayStatistics();
+            mainWindow.Start.IsEnabled = true;
+           // this.Close();
         }
 
         private void KinectSensorOnAllFramesReady(object sender, AllFramesReadyEventArgs allFramesReadyEventArgs)
@@ -216,11 +217,6 @@ namespace FaceTrackingBasics
         public double getDifficulty()
         {
             return difficulty;
-        }
-
-        private void ProgressBar_ValueChanged_1(object sender, RoutedPropertyChangedEventArgs<double> e)
-        {
-
         }
     }
 }
