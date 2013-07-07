@@ -37,6 +37,8 @@ namespace FaceTrackingBasics
 
             foreach (Game g in games)
             {
+                if (g.getMaximum() == Double.MinValue)
+                    continue;
                TableRow tr = new TableRow();
                tr.Cells.Add(new TableCell(new Paragraph(new Run(g.getName()))));
                tr.Cells.Add(new TableCell(new Paragraph(new Run(g.getMinimum().ToString("N3")))));

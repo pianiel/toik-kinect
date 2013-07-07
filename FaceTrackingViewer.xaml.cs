@@ -407,15 +407,22 @@ namespace FaceTrackingBasics
             }
 
 
-            private Transform getImageTransform ()
+            private Transform[] getImageTransform ()
             {
-                Point p = GameUtils.convertToPoint(FeaturePoint.NoseTip, facePoints);
-                ScaleTransform transform = new ScaleTransform();
-                transform.CenterX=p.X;
-                transform.CenterY=p.Y;
-                transform.ScaleX=2;
-                transform.ScaleY=2;
-                return transform;
+                Point headBottom = GameUtils.convertToPoint(FeaturePoint.ContourBottomChin, facePoints);
+                Point headTop = GameUtils.convertToPoint(FeaturePoint.ContourTopSkull, facePoints);
+
+                TranslateTransform translate = new TranslateTransform();
+                translate.X = 320 - headBottom.X;
+                translate.Y = 350 - headBottom.Y;
+                ScaleTransform scale = new ScaleTransform();
+                
+                scale.CenterX=headBottom.X;
+                scale.CenterY=headBottom.Y;
+                double s = 350 / Math.Sqrt(Math.Pow(headBottom.Y - headTop.Y, 2) + Math.Pow(headBottom.X - headTop.X, 2));
+                scale.ScaleX= s;
+                scale.ScaleY= s;
+                return new Transform[] { translate, scale};
             }
 
             private void addFaceParts(GeometryGroup faceModelGroup)
@@ -439,7 +446,8 @@ namespace FaceTrackingBasics
                 GeometryGroup faceModelGroup = new GeometryGroup();
                 addFaceParts(faceModelGroup);
              
-                drawingContext.PushTransform(getImageTransform());
+                foreach (Transform t in getImageTransform())
+                    drawingContext.PushTransform(t);
                 drawingContext.DrawGeometry(Brushes.Black, new Pen(Brushes.Black, 1.0), faceModelGroup);
             }
 

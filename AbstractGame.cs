@@ -41,7 +41,9 @@ namespace FaceTrackingBasics
 
         public double getDeviation()
         {
-            return deviation;
+            if (measures != 0)
+                return Math.Sqrt(deviation / measures);
+            return 0;
         }
         public double getMinimum()
         {
@@ -103,9 +105,9 @@ namespace FaceTrackingBasics
 
             if (previousState != 0.0)
             {
-                if (previousState < average && state > Math.Sqrt(deviation / measures) * difficulty + average)
+                if (previousState < average && state > getDeviation() * difficulty + average)
                     return countHighPoint(state);
-                else if (previousState > average && state < average - Math.Sqrt(deviation / measures) * difficulty / 2)
+                else if (previousState > average && state < average - getDeviation() * difficulty / 2)
                     return countLowPoint(state);
             }
             else
